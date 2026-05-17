@@ -1,20 +1,20 @@
-# Assignment Brief
+# 과제 요약
 
-## Source
+## 출처
 
-HanaLoop frontend assignment spreadsheet, received May 2026.
+2026년 5월에 받은 하나루프 프론트엔드 과제 안내 메일 및 과제용 스프레드시트.
 
-## Required Output
+## 필수 산출물
 
-- Public GitHub repository
-- Next.js + TypeScript implementation
-- Interactive dashboard using assignment activity data
-- README with local run steps, system design, work time, AI usage, and trade-offs
-- UI video capture and screenshots
+- Public GitHub 저장소
+- Next.js + TypeScript 구현
+- 과제용 활동 데이터를 활용한 인터랙티브 대시보드
+- 로컬 실행 방법, 시스템 설계, 작업 시간, AI 사용 내역, trade-off가 포함된 README
+- UI 실행 영상과 스크린샷
 
-## Evaluation Focus
+## 평가 포인트
 
-- Domain understanding: PCF and GHG Scope
-- System design: API usage, modular component structure, extensibility, stability
-- UX: clear input and result reading for non-experts
-- Explanation: design choices, trade-offs, AI usage
+- 도메인 이해: PCF, GHG Scope 개념 반영
+- 시스템 설계: API 활용, 모듈형 컴포넌트 구조, 확장성, 재사용성, 안정성
+- UX: 비전문가도 데이터를 입력하고 결과를 읽을 수 있는 흐름
+- 논리적 설명: 설계 결정 이유, trade-off, AI 사용 방식
