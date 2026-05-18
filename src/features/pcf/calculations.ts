@@ -22,6 +22,7 @@ type LabelMaps = {
 export type PcfCalculationOptions = {
   factorVersion?: string;
   productionQuantity?: number;
+  activityQuantityOverrides?: Record<string, number>;
   labels?: Partial<LabelMaps>;
 };
 
@@ -164,6 +165,31 @@ export const calculateActivityEmissions = (
 const sumEmission = (records: ActivityWithEmission[]) =>
   round(records.reduce((sum, record) => sum + record.emissionKgCO2e, 0));
 
+const applyActivityQuantityOverrides = (
+  activities: ActivityRecord[],
+  overrides: Record<string, number> = {}
+) => {
+  const activityIds = new Set(activities.map((activity) => activity.id));
+  const unknownIds = Object.keys(overrides).filter((id) => !activityIds.has(id));
+
+  if (unknownIds.length > 0) {
+    throw new Error(`Unknown activity quantity override: ${unknownIds.join(", ")}`);
+  }
+
+  return activities.map((activity) => {
+    const overrideQuantity = overrides[activity.id];
+
+    if (overrideQuantity === undefined) {
+      return activity;
+    }
+
+    return {
+      ...activity,
+      quantity: overrideQuantity,
+    };
+  });
+};
+
 export const summarizeByCategory = (
   records: ActivityWithEmission[],
   labels: LabelMaps["category"] = DEFAULT_LABELS.category
@@ -246,7 +272,11 @@ export const calculatePcf = (
     throw new Error("Production quantity must be greater than zero");
   }
 
-  const records = calculateActivityEmissions(dataset.activities, dataset.emissionFactors, {
+  const activities = applyActivityQuantityOverrides(
+    dataset.activities,
+    options.activityQuantityOverrides
+  );
+  const records = calculateActivityEmissions(activities, dataset.emissionFactors, {
     factorVersion: options.factorVersion,
   });
   const totalKgCO2e = sumEmission(records);
