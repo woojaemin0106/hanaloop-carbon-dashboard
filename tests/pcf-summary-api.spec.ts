@@ -26,7 +26,7 @@ test("builds a reusable PCF summary response for dashboard and API use", () => {
     expect.objectContaining({
       id: "pcf-per-unit",
       value: 11072.724,
-      unit: "kgCO2e/데이터 묶음",
+      unit: "kgCO2e/과제 데이터 묶음",
     }),
     expect.objectContaining({
       id: "scope3-share",
