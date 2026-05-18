@@ -27,7 +27,16 @@ export const parseProductionQuantityInput = (
     };
   }
 
-  const parsed = productionQuantitySchema.safeParse(Number(normalizedInput));
+  const numericValue = Number(normalizedInput);
+
+  if (!Number.isFinite(numericValue)) {
+    return {
+      ok: false,
+      message: "생산수량은 숫자로 입력해야 합니다.",
+    };
+  }
+
+  const parsed = productionQuantitySchema.safeParse(numericValue);
 
   if (!parsed.success) {
     return {
