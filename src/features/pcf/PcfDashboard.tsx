@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 
+import { ProductionQuantityForm } from "./ProductionQuantityForm";
 import { getAssignmentPcfSummary } from "./summary-service";
 
 const CATEGORY_COLORS = {
@@ -79,6 +80,8 @@ export function PcfDashboard() {
           </article>
         ))}
       </section>
+
+      <ProductionQuantityForm initialSummary={summary} />
 
       <section className="dashboard-grid" aria-label="배출량 요약">
         <article className="panel">
