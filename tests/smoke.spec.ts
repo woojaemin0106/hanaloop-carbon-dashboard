@@ -3,11 +3,14 @@ import { readFile } from "node:fs/promises";
 
 test("keeps the dashboard shell entry copy", async () => {
   const pageSource = await readFile("src/app/page.tsx", "utf8");
-  const dashboardSource = await readFile("src/features/pcf/PcfDashboard.tsx", "utf8");
+  const dashboardSource = await readFile(
+    "src/features/company-emissions/CompanyEmissionsDashboard.tsx",
+    "utf8"
+  );
 
-  expect(pageSource).toContain("PcfDashboard");
-  expect(dashboardSource).toContain("CT-045 PCF Lifecycle Dashboard");
-  expect(dashboardSource).toContain("ProductionQuantityForm");
-  expect(dashboardSource).toContain("ActivityAdjustmentForm");
-  expect(dashboardSource).toContain("월별 배출량 추이");
+  expect(pageSource).toContain("CompanyEmissionsDashboard");
+  expect(dashboardSource).toContain("nav-drawer");
+  expect(dashboardSource).toContain("Executive emissions control room");
+  expect(dashboardSource).toContain("fetchCompanies");
+  expect(dashboardSource).toContain("createOrUpdatePost");
 });
