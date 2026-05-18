@@ -229,6 +229,123 @@ dd {
   margin-bottom: 16px;
 }
 
+.input-panel {
+  margin-bottom: 16px;
+}
+
+.input-panel__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
+  gap: 18px;
+  align-items: start;
+}
+
+.quantity-control label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.quantity-input-wrap {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.quantity-input-wrap:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgb(31 122 90 / 14%);
+}
+
+.quantity-input-wrap:has(input[aria-invalid="true"]) {
+  border-color: #b42318;
+  box-shadow: 0 0 0 3px rgb(180 35 24 / 12%);
+}
+
+.quantity-input-wrap input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  padding: 14px 16px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  outline: 0;
+}
+
+.quantity-input-wrap span {
+  flex: 0 0 auto;
+  padding: 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.form-message {
+  min-height: 24px;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.form-message--error {
+  color: #b42318;
+  font-weight: 700;
+}
+
+.recalculation-result {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.recalculation-result div {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-subtle);
+}
+
+.recalculation-result span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.recalculation-result strong {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: baseline;
+  margin-top: 10px;
+  color: var(--foreground);
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.recalculation-result small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.change-rate--down {
+  color: var(--green) !important;
+}
+
+.change-rate--up {
+  color: #b42318 !important;
+}
+
 .monthly-chart {
   display: grid;
   gap: 12px;
@@ -414,5 +531,14 @@ tbody tr:last-child td {
   .source-list div {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+
+  .input-panel__layout,
+  .recalculation-result {
+    grid-template-columns: 1fr;
+  }
+
+  .quantity-input-wrap {
+    align-items: stretch;
   }
 }
