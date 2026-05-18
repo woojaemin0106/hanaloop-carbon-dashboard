@@ -16,6 +16,10 @@ export type PcfSummarySource = {
   emissionFactorVersion: string;
 };
 
+export type PcfSummaryOptions = {
+  productionQuantity?: number;
+};
+
 export type PcfSummaryResponse = PcfCalculationResult & {
   period: {
     startMonth: string;
@@ -67,7 +71,7 @@ const buildKpis = (summary: PcfCalculationResult): PcfSummaryKpi[] => {
       id: "pcf-per-unit",
       label: "제품 단위 PCF",
       value: summary.pcfKgCO2ePerUnit,
-      unit: "kgCO2e/데이터 묶음",
+      unit: `kgCO2e/${summary.product.productionUnit}`,
       description: "현재 과제 데이터의 생산수량 기준 단위 배출량",
     },
     {
@@ -108,5 +112,9 @@ export const buildPcfSummaryResponse = (
   ],
 });
 
-export const getAssignmentPcfSummary = () =>
-  buildPcfSummaryResponse(calculatePcf(assignmentPcfDataset));
+export const getAssignmentPcfSummary = (options: PcfSummaryOptions = {}) =>
+  buildPcfSummaryResponse(
+    calculatePcf(assignmentPcfDataset, {
+      productionQuantity: options.productionQuantity,
+    })
+  );
