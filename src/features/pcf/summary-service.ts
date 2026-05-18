@@ -18,6 +18,7 @@ export type PcfSummarySource = {
 
 export type PcfSummaryOptions = {
   productionQuantity?: number;
+  activityQuantityOverrides?: Record<string, number>;
 };
 
 export type PcfSummaryResponse = PcfCalculationResult & {
@@ -116,5 +117,6 @@ export const getAssignmentPcfSummary = (options: PcfSummaryOptions = {}) =>
   buildPcfSummaryResponse(
     calculatePcf(assignmentPcfDataset, {
       productionQuantity: options.productionQuantity,
+      activityQuantityOverrides: options.activityQuantityOverrides,
     })
   );

@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 
+import { ActivityAdjustmentForm } from "./ActivityAdjustmentForm";
 import { ProductionQuantityForm } from "./ProductionQuantityForm";
 import { getAssignmentPcfSummary } from "./summary-service";
 
@@ -82,6 +83,8 @@ export function PcfDashboard() {
       </section>
 
       <ProductionQuantityForm initialSummary={summary} />
+
+      <ActivityAdjustmentForm initialSummary={summary} />
 
       <section className="dashboard-grid" aria-label="배출량 요약">
         <article className="panel">
