@@ -233,11 +233,75 @@ dd {
   margin-bottom: 16px;
 }
 
+.activity-panel {
+  margin-bottom: 16px;
+}
+
 .input-panel__layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
   gap: 18px;
   align-items: start;
+}
+
+.activity-panel__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(360px, 520px);
+  gap: 18px;
+  align-items: start;
+}
+
+.activity-edit-list {
+  display: grid;
+  gap: 10px;
+}
+
+.activity-edit-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) 64px minmax(180px, 240px);
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-subtle);
+}
+
+.activity-edit-row > div:first-child {
+  min-width: 0;
+}
+
+.activity-edit-row span,
+.activity-edit-row small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.activity-edit-row strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--foreground);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.activity-edit-row label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.activity-edit-row .form-message {
+  grid-column: 3;
+  min-height: 18px;
+  margin: -4px 0 0;
+  font-size: 12px;
+}
+
+.scenario-result {
+  grid-template-columns: 1fr;
 }
 
 .quantity-control label {
@@ -534,8 +598,18 @@ tbody tr:last-child td {
   }
 
   .input-panel__layout,
+  .activity-panel__layout,
   .recalculation-result {
     grid-template-columns: 1fr;
+  }
+
+  .activity-edit-row {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-edit-row .form-message {
+    grid-column: auto;
+    margin-top: -2px;
   }
 
   .quantity-input-wrap {
