@@ -221,3 +221,34 @@
 
 - 제출용 스크린샷 또는 짧은 데모 영상에서 생산수량 입력과 활동량 조정 흐름을 함께 보여준다.
 - 최종 README에 검증 결과와 제출 자료 링크를 반영한다.
+
+## 2026-05-19 - 프로젝트 안내 원문 기준 회사형 대시보드 정렬
+
+### 자동 검증
+
+- `npm run lint` 통과
+- `npm run test` 통과
+  - 총 14개 테스트 통과
+  - 회사 배출량/탄소세 요약 테스트 3개 추가
+  - 앱 진입점 smoke 테스트를 회사형 대시보드 기준으로 갱신
+- `npm run build` 통과
+
+### 브라우저 검토
+
+- `http://127.0.0.1:3004`에서 실제 화면을 확인했다.
+- navigation drawer의 `CarbonOps` 브랜드와 메뉴가 렌더링되는지 확인했다.
+- 경영진 KPI 영역에서 `Tax exposure`와 `$63,575`가 표시되는지 확인했다.
+- Post 저장 전 `Math.random`을 실패 방향으로 고정해 fake backend write 실패를 만들고, `Save failed. The optimistic note was rolled back.` 메시지가 노출되는지 확인했다.
+
+### 수기 검토
+
+- Google Docs 안내문은 회사/국가/월별 배출량/Post 모델을 요구하므로 첫 화면을 제품 PCF 중심에서 회사형 배출량 대시보드로 전환했다.
+- `src/lib/api.ts`는 안내문 stub과 동일한 방향으로 200-800ms 지연과 15% write 실패를 시뮬레이션한다.
+- Post 작성은 optimistic update 후 실패 시 이전 posts 배열로 rollback한다. loading/error/partial failure 흐름을 보여주기 위한 설계다.
+- 기존 PCF 모듈은 제거하지 않고 보조 시나리오로 유지했다. 이미 계산/검증된 도메인 로직이므로 확장 기능으로 설명할 수 있다.
+- React 18 조합을 맞추기 위해 Next 14/15를 시도했지만 현재 Windows/Node 환경에서 빌드 오류가 발생했다. 제출 안정성을 우선해 검증 가능한 Next 16/React 19 조합을 유지한다.
+
+### 다음 검토 포인트
+
+- PR 머지 후 제출용 스크린샷과 짧은 영상에서 navigation drawer, KPI, Post 저장 실패 rollback을 보여준다.
+- 최종 제출 전 README의 기술 스택 trade-off 표현이 과도하게 방어적으로 보이지 않는지 다시 다듬는다.

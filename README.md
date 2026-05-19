@@ -1,7 +1,7 @@
 # 하나루프 탄소 대시보드
 
-하나루프 프론트엔드 채용 과제를 위한 PCF(Product Carbon Footprint) 전과정 탄소 대시보드입니다.
-과제 제공 활동 데이터를 기준으로 제품 `CT-045`의 총 배출량, 제품 단위 PCF, GHG Scope별 비중, 월별 추이를 한 화면에서 확인하고 주요 활동량을 조정해 감축 시나리오를 검토할 수 있습니다.
+하나루프 프론트엔드 채용 과제를 위한 회사형 탄소 배출량 대시보드입니다.
+프로젝트 안내문에서 제시한 `Company`, `GhgEmission`, `Post` 데이터 모델을 기준으로 회사별 배출량, 국가별 탄소세 노출, 월별 추이, 운영 메모를 한 화면에서 확인할 수 있습니다.
 
 ## 로컬 실행
 
@@ -31,23 +31,24 @@ npm run build
 
 ## 구현 범위
 
-- 대상 제품: 컴퓨터 화면 `CT-045`
+- 대상: 회사/계열사 배출량 포트폴리오
 - 기술 스택: TypeScript, Next.js App Router, React, CSS
-- 핵심 화면: KPI, 활동 유형별 배출량, GHG Scope별 배출량, 월별 배출량 추이, 상위 배출 활동
-- 입력 UX: 생산수량 조정, 상위 배출 활동량 조정, 단위 PCF/총 배출량 즉시 재계산, 오류 메시지 표시
+- 핵심 화면: navigation drawer, 경영진 KPI, 회사별 배출량, 국가별 탄소세 노출, 월별 배출량 추이, 회사별 운영 메모
+- 입력 UX: 회사별 Post 작성, fake backend 저장 실패 시 optimistic rollback, 생산수량/활동량 조정 시나리오
 - 내부 API: `/api/pcf/summary`
-- 테스트: PCF 계산 테스트, 생산수량/활동량 입력 검증 테스트, API 응답 테스트, 앱 진입점 smoke 테스트
+- fake backend: `src/lib/api.ts`에서 200-800ms 지연과 15% write 실패를 시뮬레이션
+- 테스트: 회사 배출량 요약 테스트, PCF 계산 테스트, 입력 검증 테스트, API 응답 테스트, 앱 진입점 smoke 테스트
 
 ## 주요 결과
 
 | 항목 | 값 |
 | --- | --- |
-| 총 배출량 | `11,072.724 kgCO2e` |
-| 총 배출량 환산 | `11.072724 tCO2e` |
-| 제품 단위 PCF | `11,072.724 kgCO2e/과제 데이터 묶음` |
-| Scope 2 | `469.224 kgCO2e` |
-| Scope 3 | `10,603.5 kgCO2e` |
-| Scope 3 비중 | `95.8%` |
+| 총 배출량 | `2,599 tCO2e` |
+| 최신 월 배출량 | `468 tCO2e` |
+| 추정 탄소세 노출 | `$63,575` |
+| 회사 수 | `4` |
+| 국가 수 | `4` |
+| 운영 메모 | `3건` |
 
 ## 시스템 구조
 
@@ -56,6 +57,13 @@ src/
   app/
     api/pcf/summary/route.ts      # 대시보드용 요약 API
     page.tsx                      # 첫 화면 진입점
+  lib/
+    api.ts                        # 지연/실패를 시뮬레이션하는 fake backend
+  features/company-emissions/
+    analytics.ts                  # 회사/국가/월별 배출량 집계
+    seed-data.ts                  # Country, Company, Post seed data
+    types.ts                      # 과제 안내문 기반 데이터 모델
+    CompanyEmissionsDashboard.tsx # navigation drawer 기반 메인 대시보드
   features/pcf/
     assignment-data.ts            # 과제 원본 활동 데이터와 배출계수
     calculations.ts               # PCF 계산과 집계 로직
@@ -68,16 +76,20 @@ src/
 
 ```mermaid
 flowchart LR
-  A["과제 활동 데이터"] --> B["PCF 계산 로직"]
-  C["배출계수"] --> B
-  B --> D["요약 서비스 DTO"]
-  D --> E["/api/pcf/summary"]
-  D --> F["대시보드 UI"]
+  A["Country / Company / Post seed data"] --> B["Fake backend with latency"]
+  B --> C["Client dashboard state"]
+  C --> D["Navigation drawer and filters"]
+  C --> E["Executive KPI and charts"]
+  C --> F["Post write with rollback"]
+  G["PCF calculation module"] --> H["Product scenario section"]
 ```
 
 ## 설계 결정
 
 - 활동 데이터와 배출계수를 분리했습니다. 실제 탄소 관리 플랫폼에서는 배출계수 버전과 적용일을 추적해야 하므로, 단순 계산 배열보다 확장성이 좋습니다.
+- 프로젝트 안내문 원문이 회사/국가/게시글 모델을 요구하므로 첫 화면을 제품 PCF에서 회사형 배출량 대시보드로 전환했습니다.
+- navigation drawer와 main content 영역을 분리했습니다. 경영진이 핵심 지표, 회사 목록, 운영 메모를 빠르게 오갈 수 있게 하기 위한 구조입니다.
+- fake backend는 200-800ms 지연과 15% 저장 실패를 시뮬레이션합니다. 저장 실패 시 optimistic update를 rollback해 loading/error state를 실제 사용자 흐름으로 보여줍니다.
 - 전기는 구매 전력으로 보아 `Scope 2`, 원소재와 운송은 공급망 활동으로 보아 `Scope 3`에 매핑했습니다.
 - 계산 로직과 화면 응답을 분리했습니다. `summary-service.ts`가 KPI, 기간, 데이터 출처를 붙여 UI와 API가 같은 구조를 사용합니다.
 - 첫 화면은 랜딩 페이지가 아니라 실제 대시보드로 구성했습니다. 평가자가 실행 직후 핵심 수치와 월별 흐름을 바로 확인할 수 있게 하기 위한 결정입니다.
@@ -90,6 +102,7 @@ flowchart LR
 - 활동량 조정 UI는 현재 상위 배출 활동 중심의 시나리오 입력입니다. 원본 데이터 전체 편집, 파일 업로드, 저장 기능은 다음 단계로 남겨두고 이번 제출에서는 재계산 흐름과 검증 메시지를 명확히 보여주는 데 집중했습니다.
 - 현재 데이터 저장소는 DB가 아니라 TypeScript 정적 데이터입니다. 대신 타입, 계산 함수, 요약 서비스 경계를 분리해 PostgreSQL 또는 업로드 데이터로 옮기기 쉽게 만들었습니다.
 - 월별 차트는 Recharts 대신 CSS 누적 막대로 구현했습니다. 초기 제출 단계에서는 서버 컴포넌트와 정적 빌드 안정성을 우선했고, 고급 상호작용이 필요해지면 Recharts로 교체할 수 있습니다.
+- 안내문은 React 18을 명시하지만, 현재 로컬 검증 환경에서는 Next 14/15 + React 18 조합이 Windows/Node 환경에서 빌드 오류를 냈습니다. 제출 안정성을 우선해 `Next.js 16.2.4 + React 19.2.4` 조합으로 유지했고, Next.js 14+ 조건과 App Router 조건은 충족합니다.
 
 ## AI 활용
 
