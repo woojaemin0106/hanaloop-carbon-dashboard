@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, BarChart3, Building2, FileText, RefreshCw, Save } from "lucide-react";
+import { AlertCircle, BarChart3, Building2, FileText, Leaf, RefreshCw, Save } from "lucide-react";
 import { type CSSProperties, FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 import {
@@ -13,6 +13,7 @@ import {
 } from "./analytics";
 import type { Company, Country, Post } from "./types";
 import { createOrUpdatePost, fetchCompanies, fetchCountries, fetchPosts } from "@/lib/api";
+import { PcfDashboard } from "@/features/pcf/PcfDashboard";
 
 type LoadState =
   | { status: "loading" }
@@ -23,6 +24,7 @@ const navigationItems = [
   { id: "overview", label: "경영진 개요", icon: BarChart3 },
   { id: "companies", label: "회사별 현황", icon: Building2 },
   { id: "posts", label: "운영 메모", icon: FileText },
+  { id: "pcf", label: "PCF 시나리오", icon: Leaf },
 ];
 
 const formatNumber = (value: number, maximumFractionDigits = 1) =>
@@ -439,6 +441,8 @@ export function CompanyEmissionsDashboard() {
                 </article>
               </section>
             ) : null}
+
+            {activeSection === "pcf" ? <PcfDashboard embedded /> : null}
           </>
         ) : null}
       </main>

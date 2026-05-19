@@ -36,12 +36,17 @@ const barStyle = (percent: number, color: string) =>
     "--bar-color": color,
   }) as CSSProperties;
 
-export function PcfDashboard() {
+type PcfDashboardProps = {
+  embedded?: boolean;
+};
+
+export function PcfDashboard({ embedded = false }: PcfDashboardProps = {}) {
   const summary = getAssignmentPcfSummary();
   const maxMonthlyTotal = Math.max(...summary.monthly.map((month) => month.totalKgCO2e));
+  const Shell = embedded ? "section" : "main";
 
   return (
-    <main className="dashboard-shell">
+    <Shell className={embedded ? "dashboard-shell dashboard-shell--embedded" : "dashboard-shell"}>
       <header className="dashboard-header">
         <div>
           <p className="eyebrow">HanaLoop Carbon Management</p>
@@ -243,6 +248,6 @@ export function PcfDashboard() {
           </ul>
         </article>
       </section>
-    </main>
+    </Shell>
   );
 }
