@@ -33,7 +33,7 @@ npm run build
 
 - 대상: 회사/계열사 배출량 포트폴리오
 - 기술 스택: TypeScript, Next.js App Router, React, CSS
-- 핵심 화면: navigation drawer, 경영진 KPI, 회사별 배출량, 국가별 탄소세 노출, 월별 배출량 추이, 회사별 운영 메모
+- 핵심 화면: navigation drawer, 경영진 KPI, 회사별 배출량, 국가별 탄소세 노출, 월별 배출량 추이, 회사별 운영 메모, PCF 시나리오
 - 입력 UX: 회사별 Post 작성, fake backend 저장 실패 시 optimistic rollback, 생산수량/활동량 조정 시나리오
 - 내부 API: `/api/pcf/summary`
 - fake backend: `src/lib/api.ts`에서 200-800ms 지연과 15% write 실패를 시뮬레이션
@@ -58,8 +58,29 @@ npm run build
 | --- | --- |
 | `submission/desktop-dashboard.png` | 데스크톱 경영진 대시보드 전체 화면 |
 | `submission/company-section.png` | navigation drawer의 회사별 현황 화면 |
+| `submission/pcf-section.png` | PCF/GHG Scope 시나리오 화면 |
 | `submission/mobile-dashboard.png` | 모바일 반응형 대시보드 화면 |
 | `submission/rollback-error-state.png` | fake backend 저장 실패와 optimistic rollback 상태 |
+
+## 작업 소요 시간
+
+커밋 시각, 검증 로그, 실제 작업 기록을 기준으로 확인 가능한 작업 시간은 약 `207분`입니다. 과제 메일 확인, Google 문서/스프레드시트 확인, GitHub UI 조작 시간은 별도 준비 시간으로 봤습니다.
+
+| 구간 | 소요 시간 |
+| --- | --- |
+| 레포 생성, Next.js 기본 골격, 진행 문서 작성 | 약 11분 |
+| PCF 도메인 데이터, 계산 로직, 테스트 작성 | 약 29분 |
+| 요약 API, 대시보드 UI, README 1차 정리 | 약 39분 |
+| 생산수량 입력, 활동량 조정 UX 구현 | 약 53분 |
+| 프로젝트 안내 원문 기준 회사형 대시보드 정렬 | 약 30분 |
+| 제출 스크린샷, 한국어 UI, navigation drawer 보강, 최종 제출 정리 | 약 45분 |
+
+## 시간이 많이 소요된 부분
+
+- 스프레드시트와 Google Docs 원문 요구를 다시 대조하며 PCF 중심 구현과 회사형 대시보드 요구를 함께 만족시키는 구조를 정리했습니다.
+- 전기, 원소재, 운송 데이터를 GHG Scope와 전과정 단계에 맞게 해석하고 테스트 기대값을 수기 검산했습니다.
+- navigation drawer가 단순 라벨 변경이 아니라 실제 본문 전환으로 보이도록 사용자 흐름을 다시 점검했습니다.
+- 제출용 스크린샷은 개발 서버가 아니라 production server 기준으로 다시 촬영해 README, 제출 폴더, 제출 메일 초안을 맞췄습니다.
 
 ## 시스템 구조
 
@@ -99,6 +120,7 @@ flowchart LR
 
 - 활동 데이터와 배출계수를 분리했습니다. 실제 탄소 관리 플랫폼에서는 배출계수 버전과 적용일을 추적해야 하므로, 단순 계산 배열보다 확장성이 좋습니다.
 - 프로젝트 안내문 원문이 회사/국가/게시글 모델을 요구하므로 첫 화면을 제품 PCF에서 회사형 배출량 대시보드로 전환했습니다.
+- 스프레드시트의 PCF/GHG Scope 요구도 확인할 수 있도록 navigation drawer에 `PCF 시나리오` 화면을 추가했습니다.
 - 안내문은 UI 언어를 제한하지 않으므로 주요 화면 문구는 한국어 중심으로 구성했습니다. 국내 채용 과제 맥락에서 평가자가 KPI, 필터, 에러 상태를 빠르게 읽을 수 있게 하기 위한 결정입니다.
 - navigation drawer와 main content 영역을 분리했습니다. 경영진이 핵심 지표, 회사 목록, 운영 메모를 빠르게 오갈 수 있게 하기 위한 구조입니다.
 - fake backend는 200-800ms 지연과 15% 저장 실패를 시뮬레이션합니다. 저장 실패 시 optimistic update를 rollback해 loading/error state를 실제 사용자 흐름으로 보여줍니다.

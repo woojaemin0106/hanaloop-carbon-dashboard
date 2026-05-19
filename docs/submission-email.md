@@ -34,6 +34,7 @@ npm run build
 
 - `submission/desktop-dashboard.png`
 - `submission/company-section.png`
+- `submission/pcf-section.png`
 - `submission/mobile-dashboard.png`
 - `submission/rollback-error-state.png`
 
