@@ -3,26 +3,26 @@ import type { Company, Country, Post } from "./types";
 export const countries: Country[] = [
   {
     code: "KR",
-    name: "South Korea",
-    region: "Asia Pacific",
+    name: "대한민국",
+    region: "아시아 태평양",
     carbonTaxUsdPerTon: 18,
   },
   {
     code: "US",
-    name: "United States",
-    region: "North America",
+    name: "미국",
+    region: "북미",
     carbonTaxUsdPerTon: 22,
   },
   {
     code: "DE",
-    name: "Germany",
-    region: "Europe",
+    name: "독일",
+    region: "유럽",
     carbonTaxUsdPerTon: 49,
   },
   {
     code: "VN",
-    name: "Vietnam",
-    region: "Asia Pacific",
+    name: "베트남",
+    region: "아시아 태평양",
     carbonTaxUsdPerTon: 8,
   },
 ];
@@ -85,23 +85,23 @@ export const companies: Company[] = [
 export const posts: Post[] = [
   {
     id: "p1",
-    title: "Quarterly CO2 update",
+    title: "분기 CO2 업데이트",
     resourceUid: "c1",
     dateTime: "2025-03",
-    content: "Electricity procurement remains the main driver for Korea operations.",
+    content: "국내 사업장의 주요 배출 원인은 여전히 전력 구매입니다.",
   },
   {
     id: "p2",
-    title: "Freight lane review",
+    title: "운송 경로 검토",
     resourceUid: "c3",
     dateTime: "2025-04",
-    content: "Logistics emissions increased after two supplier lane changes.",
+    content: "공급사 운송 경로 2건이 변경되면서 물류 배출량이 증가했습니다.",
   },
   {
     id: "p3",
-    title: "Assembly efficiency note",
+    title: "조립 공정 효율 메모",
     resourceUid: "c4",
     dateTime: "2025-06",
-    content: "New shift plan reduced idle electricity but freight increased.",
+    content: "신규 교대 계획으로 유휴 전력은 줄었지만 운송 배출은 증가했습니다.",
   },
 ];

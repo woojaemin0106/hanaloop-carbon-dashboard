@@ -10,7 +10,7 @@ test("keeps the dashboard shell entry copy", async () => {
 
   expect(pageSource).toContain("CompanyEmissionsDashboard");
   expect(dashboardSource).toContain("nav-drawer");
-  expect(dashboardSource).toContain("Executive emissions control room");
+  expect(dashboardSource).toContain("경영진 탄소 배출 관리 화면");
   expect(dashboardSource).toContain("fetchCompanies");
   expect(dashboardSource).toContain("createOrUpdatePost");
 });
