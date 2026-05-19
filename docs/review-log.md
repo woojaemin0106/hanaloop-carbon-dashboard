@@ -304,3 +304,26 @@
 - `activeSection`을 단순 라벨 변경이 아니라 실제 섹션 렌더링 조건으로 사용하도록 수정했다.
 - `회사별 현황`은 회사 순위와 선택 회사 요약을 보여주고, `운영 메모`는 메모 작성/목록에 집중하도록 분리했다.
 - 모바일에서는 새로 추가한 선택 회사 요약 그리드가 단일 컬럼으로 내려가도록 CSS를 보강했다.
+
+## 2026-05-19 - 최종 제출 준비 마감
+
+### 자동 검증
+
+- `npm run build` 통과
+- production server `http://127.0.0.1:3014`에서 최신 스크린샷을 재촬영했다.
+- `main` 브랜치에 `develop`의 최신 상태를 fast-forward로 반영했다.
+
+### 산출물
+
+- `submission/desktop-dashboard.png`
+- `submission/company-section.png`
+- `submission/mobile-dashboard.png`
+- `submission/rollback-error-state.png`
+- `docs/submission-email.md`
+
+### 수기 검토
+
+- 기존 제출 스크린샷은 navigation drawer UX 개선 전 화면이므로 최신 production 화면 기준으로 다시 촬영했다.
+- `company-section.png`를 추가해 회사별 현황 메뉴가 실제 섹션 전환을 수행한다는 점을 제출 자료에서 확인할 수 있게 했다.
+- README와 `submission/README.md`의 스크린샷 목록과 캡처 포트를 최신 값으로 맞췄다.
+- 제출 메일 초안은 GitHub 링크, 실행 방법, 제출 자료 위치를 짧게 포함하도록 정리했다.
