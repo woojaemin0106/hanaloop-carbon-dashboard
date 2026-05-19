@@ -36,6 +36,12 @@ body {
   padding: 32px;
 }
 
+.dashboard-shell--embedded {
+  width: 100%;
+  min-height: auto;
+  padding: 0;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);

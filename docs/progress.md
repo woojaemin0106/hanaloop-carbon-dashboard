@@ -7,8 +7,8 @@
 | 항목 | 상태 |
 | --- | --- |
 | 전체 진행률 | 100% |
-| 현재 단계 | 최종 제출 준비 완료 |
-| 다음 작업 | tech@hanaloop.com 제출 메일 발송 |
+| 현재 단계 | 스프레드시트 기준 최종 대조 및 PCF 화면 보강 완료 |
+| 다음 작업 | 비디오 캡처 후 tech@hanaloop.com 제출 메일 발송 |
 | 마감 | 2026-05-20 16:00 |
 | 제출처 | tech@hanaloop.com |
 
@@ -21,12 +21,12 @@
 | 3 | PCF 원본 활동 데이터와 배출계수 모델링 | 완료 | 100% | `src/features/pcf/types.ts`, `src/features/pcf/assignment-data.ts` |
 | 4 | PCF 계산 로직 구현 | 완료 | 100% | 총 배출량, 월별/유형별/Scope별 집계 |
 | 5 | 내부 API 또는 데이터 조회 계층 구성 | 완료 | 100% | `/api/pcf/summary`, 요약 서비스 DTO |
-| 6 | 대시보드 UI 구현 | 완료 | 100% | KPI, 월별 추이, navigation drawer 섹션 전환, 회사/메모 화면 |
+| 6 | 대시보드 UI 구현 | 완료 | 100% | KPI, 월별 추이, navigation drawer 섹션 전환, 회사/메모/PCF 화면 |
 | 7 | 데이터 입력 및 검증 UX 구현 | 완료 | 100% | 생산수량/활동량 입력, 오류 메시지, 재계산 |
 | 8 | 감축 시나리오 또는 배출계수 버전 UI 구현 | 완료 | 100% | 상위 배출 활동 조정 시나리오 |
 | 9 | 테스트와 빌드 검증 | 완료 | 100% | Playwright test 14개, `npm run build`, production screenshot 검증 |
 | 10 | README 최종화 | 완료 | 100% | 제출 자료 링크, 원문 요구사항 정렬, 실행 방법, 설계 설명, AI 사용 내역, trade-off |
-| 11 | 스크린샷/영상 제출 자료 정리 | 완료 | 100% | `submission/desktop-dashboard.png`, `submission/company-section.png`, `submission/mobile-dashboard.png`, `submission/rollback-error-state.png` |
+| 11 | 스크린샷 제출 자료 정리 | 완료 | 100% | `submission/desktop-dashboard.png`, `submission/company-section.png`, `submission/pcf-section.png`, `submission/mobile-dashboard.png`, `submission/rollback-error-state.png` |
 
 ## 제출 체크리스트
 
@@ -35,7 +35,7 @@
 | 필수 | PCF 계산 결과가 시각화되어 있고 의미가 명확하다 | 완료 |
 | 필수 | 데이터 값과 단위가 정확하게 표시된다 | 완료 |
 | 필수 | 데이터 입력 오류 시 에러 메시지가 표시된다 | 완료 |
-| 필수 | UI 실행 과정의 영상과 스크린샷을 준비한다 | 완료 |
+| 필수 | UI 실행 과정의 영상과 스크린샷을 준비한다 | 스크린샷 완료, 영상 사용자 진행 |
 | 필수 | README에 로컬 실행 방법이 5단계 이내로 작성되어 있다 | 완료 |
 | 필수 | README에 AI 도구 사용 내역이 기록되어 있다 | 완료 |
 | 필수 | README에 시스템 설명과 설계 내용이 포함되어 있다 | 완료 |
@@ -66,9 +66,11 @@
 | 2026-05-19 | 제출용 스크린샷 정리 | production 실행 기준 데스크톱, 모바일, rollback 상태 캡처 |
 | 2026-05-19 | navigation drawer UX 개선 | 회사별 현황/운영 메모 클릭 시 실제 본문 섹션이 전환되도록 수정 |
 | 2026-05-19 | 최종 제출 준비 마감 | main 배포 반영, 최신 스크린샷 재촬영, 제출 메일 초안 작성 |
+| 2026-05-19 | 스프레드시트 기준 최종 대조 | PCF/GHG Scope 메뉴와 작업 소요 시간 README 요약 추가 |
 
 ## 바로 다음 액션
 
-1. `tech@hanaloop.com`으로 제출 메일을 발송한다.
-2. 메일 본문에는 GitHub 저장소 링크, 실행 방법, 제출 자료 위치를 포함한다.
-3. 필요 시 `docs/submission-email.md`의 문구를 기준으로 발송한다.
+1. 비디오 캡처를 진행한다.
+2. `tech@hanaloop.com`으로 제출 메일을 발송한다.
+3. 메일 본문에는 GitHub 저장소 링크, 실행 방법, 제출 자료 위치를 포함한다.
+4. 필요 시 `docs/submission-email.md`의 문구를 기준으로 발송한다.

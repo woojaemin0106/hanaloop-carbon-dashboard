@@ -327,3 +327,30 @@
 - `company-section.png`를 추가해 회사별 현황 메뉴가 실제 섹션 전환을 수행한다는 점을 제출 자료에서 확인할 수 있게 했다.
 - README와 `submission/README.md`의 스크린샷 목록과 캡처 포트를 최신 값으로 맞췄다.
 - 제출 메일 초안은 GitHub 링크, 실행 방법, 제출 자료 위치를 짧게 포함하도록 정리했다.
+
+## 2026-05-19 - 스프레드시트 기준 최종 대조
+
+### 자동 검증
+
+- `npm run lint` 통과
+- `npm run test` 통과
+  - 총 14개 테스트 통과
+- `npm run build` 통과
+- production server `http://127.0.0.1:3015`에서 `PCF 시나리오` 메뉴 클릭 후 `CT-045 PCF Lifecycle Dashboard`와 월별 차트가 렌더링되는지 확인했다.
+
+### 산출물
+
+- `submission/pcf-section.png`
+- `README.md`
+- `submission/README.md`
+- `docs/progress.md`
+- `docs/worktime-and-ai-log.md`
+- `docs/submission-email.md`
+
+### 수기 검토
+
+- 스프레드시트의 평가 기준에서 PCF, GHG Scope, 시스템 설계, UX, 논리적 설명이 모두 확인되는지 다시 대조했다.
+- 기존 회사형 대시보드는 Google Docs 원문 요구를 만족하고, PCF/GHG Scope 요구는 navigation drawer의 `PCF 시나리오` 화면에서 직접 확인되도록 보강했다.
+- README 본문에 작업 소요 시간과 시간이 많이 소요된 부분을 직접 추가해 제출자가 별도 문서를 열지 않아도 핵심 기록을 확인할 수 있게 했다.
+- AI 활용 기록은 `AI가 도운 일`과 `직접 판단한 일`을 분리해 과도한 자동화 의존으로 읽히지 않도록 정리했다.
+- 비디오 캡처는 사용자가 진행 예정이므로 제출 체크리스트와 메일 초안은 스크린샷/문서 기준으로만 최신화했다.
