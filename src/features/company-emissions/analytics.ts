@@ -13,6 +13,20 @@ export const getLatestMonth = (companies: Company[]) =>
     .sort()
     .at(-1) ?? "";
 
+export const filterCompanies = (
+  companies: Company[],
+  { countryCode, companyId }: { countryCode: string; companyId: string }
+) => {
+  const countryFiltered =
+    countryCode === "all" ? companies : companies.filter((company) => company.country === countryCode);
+
+  if (companyId === "all") {
+    return countryFiltered;
+  }
+
+  return countryFiltered.filter((company) => company.id === companyId);
+};
+
 export const summarizeCompanies = (
   companies: Company[],
   countries: Country[]

@@ -4,6 +4,7 @@ import { AlertCircle, BarChart3, Building2, FileText, Leaf, RefreshCw, Save } fr
 import { type CSSProperties, FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 import {
+  filterCompanies,
   getLatestMonth,
   getPostsForCompany,
   summarizeByCountry,
@@ -47,7 +48,7 @@ export function CompanyEmissionsDashboard() {
   const [loadState, setLoadState] = useState<LoadState>({ status: "loading" });
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedCountry, setSelectedCountry] = useState("all");
-  const [selectedCompanyId, setSelectedCompanyId] = useState("");
+  const [selectedCompanyId, setSelectedCompanyId] = useState("all");
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
   const [saveState, setSaveState] = useState<"idle" | "saving" | "error" | "saved">("idle");
@@ -62,7 +63,6 @@ export function CompanyEmissionsDashboard() {
         fetchPosts(),
       ]);
       setLoadState({ status: "ready", countries, companies, posts });
-      setSelectedCompanyId((current) => current || companies[0]?.id || "");
     } catch (error) {
       setLoadState({
         status: "error",
@@ -99,23 +99,45 @@ export function CompanyEmissionsDashboard() {
 
     return summarizeCompanies(visibleCompanies, readyData.countries);
   }, [readyData, visibleCompanies]);
-  const monthlySummary = useMemo(() => summarizeByMonth(visibleCompanies), [visibleCompanies]);
-  const countrySummary = useMemo(() => summarizeByCountry(companySummaries), [companySummaries]);
-  const latestMonth = getLatestMonth(visibleCompanies);
+  const dashboardCompanies = useMemo(() => {
+    if (!readyData) {
+      return [];
+    }
+
+    return filterCompanies(readyData.companies, {
+      companyId: selectedCompanyId,
+      countryCode: selectedCountry,
+    });
+  }, [readyData, selectedCompanyId, selectedCountry]);
+  const dashboardCompanySummaries = useMemo(() => {
+    if (!readyData) {
+      return [];
+    }
+
+    return summarizeCompanies(dashboardCompanies, readyData.countries);
+  }, [dashboardCompanies, readyData]);
+  const monthlySummary = useMemo(() => summarizeByMonth(dashboardCompanies), [dashboardCompanies]);
+  const countrySummary = useMemo(
+    () => summarizeByCountry(dashboardCompanySummaries),
+    [dashboardCompanySummaries]
+  );
+  const latestMonth = getLatestMonth(dashboardCompanies);
   const selectedCompany =
-    visibleCompanies.find((company) => company.id === selectedCompanyId) ?? visibleCompanies[0];
+    selectedCompanyId === "all"
+      ? visibleCompanies[0]
+      : visibleCompanies.find((company) => company.id === selectedCompanyId) ?? visibleCompanies[0];
   const selectedCompanySummary = companySummaries.find(
     (summary) => summary.company.id === selectedCompany?.id
   );
   const selectedCompanyPosts =
     readyData && selectedCompany ? getPostsForCompany(readyData.posts, selectedCompany.id) : [];
-  const totalEmissions = sumEmissions(visibleCompanies.flatMap((company) => company.emissions));
+  const totalEmissions = sumEmissions(dashboardCompanies.flatMap((company) => company.emissions));
   const latestMonthEmissions = sumEmissions(
-    visibleCompanies.flatMap((company) =>
+    dashboardCompanies.flatMap((company) =>
       company.emissions.filter((emission) => emission.yearMonth === latestMonth)
     )
   );
-  const estimatedTaxUsd = companySummaries.reduce(
+  const estimatedTaxUsd = dashboardCompanySummaries.reduce(
     (sum, summary) => sum + summary.estimatedCarbonTaxUsd,
     0
   );
@@ -232,32 +254,41 @@ export function CompanyEmissionsDashboard() {
 
         {readyData ? (
           <>
-            <section className="filter-bar" aria-label="대시보드 필터">
-              <label>
-                국가
-                <select value={selectedCountry} onChange={(event) => setSelectedCountry(event.target.value)}>
-                  <option value="all">전체 국가</option>
-                  {readyData.countries.map((country) => (
-                    <option key={country.code} value={country.code}>
-                      {country.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                회사
-                <select
-                  value={selectedCompany?.id ?? ""}
-                  onChange={(event) => setSelectedCompanyId(event.target.value)}
-                >
-                  {visibleCompanies.map((company) => (
-                    <option key={company.id} value={company.id}>
-                      {company.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </section>
+            {activeSection !== "pcf" ? (
+              <section className="filter-bar" aria-label="대시보드 필터">
+                <label>
+                  국가
+                  <select
+                    value={selectedCountry}
+                    onChange={(event) => {
+                      setSelectedCountry(event.target.value);
+                      setSelectedCompanyId("all");
+                    }}
+                  >
+                    <option value="all">전체 국가</option>
+                    {readyData.countries.map((country) => (
+                      <option key={country.code} value={country.code}>
+                        {country.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  회사
+                  <select
+                    value={selectedCompanyId}
+                    onChange={(event) => setSelectedCompanyId(event.target.value)}
+                  >
+                    <option value="all">전체 회사</option>
+                    {visibleCompanies.map((company) => (
+                      <option key={company.id} value={company.id}>
+                        {company.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </section>
+            ) : null}
 
             {activeSection === "overview" ? (
               <>
@@ -288,7 +319,7 @@ export function CompanyEmissionsDashboard() {
                   </article>
                   <article className="kpi-card">
                     <span>회사 수</span>
-                    <strong>{visibleCompanies.length}</strong>
+                    <strong>{dashboardCompanies.length}</strong>
                     <p>현재 필터에 포함된 운영 법인입니다.</p>
                   </article>
                 </section>

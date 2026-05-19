@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import {
+  filterCompanies,
   getLatestMonth,
   getPostsForCompany,
   summarizeByCountry,
@@ -41,6 +42,16 @@ test("builds monthly and country summaries for the dashboard", () => {
     emissions: 754,
     taxUsd: 13572,
   });
+});
+
+test("filters executive dashboard companies by country and selected company", () => {
+  expect(filterCompanies(companies, { companyId: "all", countryCode: "all" })).toHaveLength(4);
+  expect(filterCompanies(companies, { companyId: "all", countryCode: "KR" })).toEqual([
+    expect.objectContaining({ id: "c1" }),
+  ]);
+  expect(filterCompanies(companies, { companyId: "c2", countryCode: "all" })).toEqual([
+    expect.objectContaining({ id: "c2", country: "US" }),
+  ]);
 });
 
 test("links posts to the selected company and sorts recent notes first", () => {
