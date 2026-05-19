@@ -102,6 +102,9 @@ export function CompanyEmissionsDashboard() {
   const latestMonth = getLatestMonth(visibleCompanies);
   const selectedCompany =
     visibleCompanies.find((company) => company.id === selectedCompanyId) ?? visibleCompanies[0];
+  const selectedCompanySummary = companySummaries.find(
+    (summary) => summary.company.id === selectedCompany?.id
+  );
   const selectedCompanyPosts =
     readyData && selectedCompany ? getPostsForCompany(readyData.posts, selectedCompany.id) : [];
   const totalEmissions = sumEmissions(visibleCompanies.flatMap((company) => company.emissions));
@@ -254,153 +257,188 @@ export function CompanyEmissionsDashboard() {
               </label>
             </section>
 
-            <section className="kpi-grid" aria-label="경영진 KPI">
-              <article className="kpi-card">
-                <span>총 배출량</span>
-                <strong>
-                  {formatNumber(totalEmissions)}
-                  <small>tCO2e</small>
-                </strong>
-                <p>선택된 회사와 월별 데이터를 합산했습니다.</p>
-              </article>
-              <article className="kpi-card">
-                <span>최신 월 배출량</span>
-                <strong>
-                  {formatNumber(latestMonthEmissions)}
-                  <small>tCO2e</small>
-                </strong>
-                <p>{latestMonth || "월 데이터 없음"} 기준 운영 배출량입니다.</p>
-              </article>
-              <article className="kpi-card">
-                <span>추정 탄소세</span>
-                <strong>
-                  {formatUsd(estimatedTaxUsd)}
-                  <small>추정</small>
-                </strong>
-                <p>국가별 탄소세율과 총 배출량을 곱해 추정했습니다.</p>
-              </article>
-              <article className="kpi-card">
-                <span>회사 수</span>
-                <strong>{visibleCompanies.length}</strong>
-                <p>현재 필터에 포함된 운영 법인입니다.</p>
-              </article>
-            </section>
+            {activeSection === "overview" ? (
+              <>
+                <section className="kpi-grid" aria-label="경영진 KPI">
+                  <article className="kpi-card">
+                    <span>총 배출량</span>
+                    <strong>
+                      {formatNumber(totalEmissions)}
+                      <small>tCO2e</small>
+                    </strong>
+                    <p>선택된 회사와 월별 데이터를 합산했습니다.</p>
+                  </article>
+                  <article className="kpi-card">
+                    <span>최신 월 배출량</span>
+                    <strong>
+                      {formatNumber(latestMonthEmissions)}
+                      <small>tCO2e</small>
+                    </strong>
+                    <p>{latestMonth || "월 데이터 없음"} 기준 운영 배출량입니다.</p>
+                  </article>
+                  <article className="kpi-card">
+                    <span>추정 탄소세</span>
+                    <strong>
+                      {formatUsd(estimatedTaxUsd)}
+                      <small>추정</small>
+                    </strong>
+                    <p>국가별 탄소세율과 총 배출량을 곱해 추정했습니다.</p>
+                  </article>
+                  <article className="kpi-card">
+                    <span>회사 수</span>
+                    <strong>{visibleCompanies.length}</strong>
+                    <p>현재 필터에 포함된 운영 법인입니다.</p>
+                  </article>
+                </section>
 
-            <section className="dashboard-grid" aria-label={activeSection}>
-              <article className="panel">
-                <div className="panel-heading">
-                  <span>월별 배출량</span>
-                  <strong>{latestMonth}</strong>
-                </div>
-                <div className="company-month-chart">
-                  {monthlySummary.map((month) => (
-                    <div className="company-month-row" key={month.yearMonth}>
-                      <span>{month.yearMonth}</span>
-                      <div className="bar-track">
-                        <span
-                          className="bar-fill"
-                          style={barStyle((month.emissions / maxMonthlyEmission) * 100)}
-                        />
-                      </div>
-                      <strong>{formatNumber(month.emissions)} t</strong>
+                <section className="dashboard-grid" aria-label="월별 배출량과 국가별 노출">
+                  <article className="panel">
+                    <div className="panel-heading">
+                      <span>월별 배출량</span>
+                      <strong>{latestMonth}</strong>
                     </div>
-                  ))}
-                </div>
-              </article>
-
-              <article className="panel">
-                <div className="panel-heading">
-                  <span>국가별 노출</span>
-                  <strong>{countrySummary.length}개 시장</strong>
-                </div>
-                <div className="country-list">
-                  {countrySummary.map((country) => (
-                    <div className="country-row" key={country.countryCode}>
-                      <div>
-                        <strong>{country.countryName}</strong>
-                        <span>{country.countryCode}</span>
-                      </div>
-                      <p>{formatNumber(country.emissions)} tCO2e</p>
-                      <small>{formatUsd(country.taxUsd)}</small>
+                    <div className="company-month-chart">
+                      {monthlySummary.map((month) => (
+                        <div className="company-month-row" key={month.yearMonth}>
+                          <span>{month.yearMonth}</span>
+                          <div className="bar-track">
+                            <span
+                              className="bar-fill"
+                              style={barStyle((month.emissions / maxMonthlyEmission) * 100)}
+                            />
+                          </div>
+                          <strong>{formatNumber(month.emissions)} t</strong>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </article>
-            </section>
+                  </article>
 
-            <section className="dashboard-grid" aria-label="회사 상세와 운영 메모">
-              <article className="panel">
-                <div className="panel-heading">
-                  <span>회사별 순위</span>
-                  <strong>{activeSection === "companies" ? "선택 보기" : "포트폴리오"}</strong>
-                </div>
-                <div className="company-list">
-                  {companySummaries
-                    .sort((a, b) => b.totalEmissions - a.totalEmissions)
-                    .map((summary) => (
-                      <button
-                        className={
-                          selectedCompany?.id === summary.company.id
-                            ? "company-row company-row--active"
-                            : "company-row"
-                        }
-                        key={summary.company.id}
-                        onClick={() => setSelectedCompanyId(summary.company.id)}
-                        type="button"
-                      >
-                        <span>{summary.company.name}</span>
-                        <strong>{formatNumber(summary.totalEmissions)} tCO2e</strong>
-                        <small>
-                          {summary.country.code} / {formatUsd(summary.estimatedCarbonTaxUsd)}
-                        </small>
-                      </button>
+                  <article className="panel">
+                    <div className="panel-heading">
+                      <span>국가별 노출</span>
+                      <strong>{countrySummary.length}개 시장</strong>
+                    </div>
+                    <div className="country-list">
+                      {countrySummary.map((country) => (
+                        <div className="country-row" key={country.countryCode}>
+                          <div>
+                            <strong>{country.countryName}</strong>
+                            <span>{country.countryCode}</span>
+                          </div>
+                          <p>{formatNumber(country.emissions)} tCO2e</p>
+                          <small>{formatUsd(country.taxUsd)}</small>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                </section>
+              </>
+            ) : null}
+
+            {activeSection === "companies" ? (
+              <section className="dashboard-grid" aria-label="회사별 현황">
+                <article className="panel">
+                  <div className="panel-heading">
+                    <span>회사별 순위</span>
+                    <strong>배출량 기준</strong>
+                  </div>
+                  <div className="company-list">
+                    {companySummaries
+                      .sort((a, b) => b.totalEmissions - a.totalEmissions)
+                      .map((summary) => (
+                        <button
+                          className={
+                            selectedCompany?.id === summary.company.id
+                              ? "company-row company-row--active"
+                              : "company-row"
+                          }
+                          key={summary.company.id}
+                          onClick={() => setSelectedCompanyId(summary.company.id)}
+                          type="button"
+                        >
+                          <span>{summary.company.name}</span>
+                          <strong>{formatNumber(summary.totalEmissions)} tCO2e</strong>
+                          <small>
+                            {summary.country.code} / {formatUsd(summary.estimatedCarbonTaxUsd)}
+                          </small>
+                        </button>
+                      ))}
+                  </div>
+                </article>
+
+                <article className="panel">
+                  <div className="panel-heading">
+                    <span>선택 회사 요약</span>
+                    <strong>{selectedCompany?.name ?? "선택된 회사 없음"}</strong>
+                  </div>
+                  <dl className="company-detail-list">
+                    <div>
+                      <dt>국가</dt>
+                      <dd>{selectedCompanySummary?.country.name ?? "-"}</dd>
+                    </div>
+                    <div>
+                      <dt>총 배출량</dt>
+                      <dd>{formatNumber(selectedCompanySummary?.totalEmissions ?? 0)} tCO2e</dd>
+                    </div>
+                    <div>
+                      <dt>최신 월 배출량</dt>
+                      <dd>{formatNumber(selectedCompanySummary?.latestMonthEmissions ?? 0)} tCO2e</dd>
+                    </div>
+                    <div>
+                      <dt>추정 탄소세</dt>
+                      <dd>{formatUsd(selectedCompanySummary?.estimatedCarbonTaxUsd ?? 0)}</dd>
+                    </div>
+                  </dl>
+                </article>
+              </section>
+            ) : null}
+
+            {activeSection === "posts" ? (
+              <section className="dashboard-grid dashboard-grid--single" aria-label="운영 메모">
+                <article className="panel">
+                  <div className="panel-heading">
+                    <span>연결된 운영 메모</span>
+                    <strong>{selectedCompany?.name ?? "선택된 회사 없음"}</strong>
+                  </div>
+                  <form className="post-form" onSubmit={handleSavePost}>
+                    <input
+                      aria-label="운영 메모 제목"
+                      onChange={(event) => setPostTitle(event.target.value)}
+                      placeholder="운영 메모 제목"
+                      value={postTitle}
+                    />
+                    <textarea
+                      aria-label="운영 메모 내용"
+                      onChange={(event) => setPostContent(event.target.value)}
+                      placeholder="이 회사의 리스크, 조치 사항, 후속 확인 내용을 입력하세요"
+                      rows={3}
+                      value={postContent}
+                    />
+                    <button disabled={saveState === "saving"} type="submit">
+                      <Save aria-hidden="true" size={16} />
+                      {saveState === "saving" ? "저장 중..." : "메모 저장"}
+                    </button>
+                    {saveState === "error" ? (
+                      <p className="form-message form-message--error">
+                        저장에 실패해 임시 메모를 이전 상태로 되돌렸습니다.
+                      </p>
+                    ) : null}
+                    {saveState === "saved" ? (
+                      <p className="form-message">fake backend 지연 후 메모가 저장되었습니다.</p>
+                    ) : null}
+                  </form>
+                  <div className="post-list">
+                    {selectedCompanyPosts.map((post) => (
+                      <article key={post.id}>
+                        <span>{post.dateTime}</span>
+                        <strong>{post.title}</strong>
+                        <p>{post.content}</p>
+                      </article>
                     ))}
-                </div>
-              </article>
-
-              <article className="panel">
-                <div className="panel-heading">
-                  <span>연결된 운영 메모</span>
-                  <strong>{selectedCompany?.name ?? "선택된 회사 없음"}</strong>
-                </div>
-                <form className="post-form" onSubmit={handleSavePost}>
-                  <input
-                    aria-label="운영 메모 제목"
-                    onChange={(event) => setPostTitle(event.target.value)}
-                    placeholder="운영 메모 제목"
-                    value={postTitle}
-                  />
-                  <textarea
-                    aria-label="운영 메모 내용"
-                    onChange={(event) => setPostContent(event.target.value)}
-                    placeholder="이 회사의 리스크, 조치 사항, 후속 확인 내용을 입력하세요"
-                    rows={3}
-                    value={postContent}
-                  />
-                  <button disabled={saveState === "saving"} type="submit">
-                    <Save aria-hidden="true" size={16} />
-                    {saveState === "saving" ? "저장 중..." : "메모 저장"}
-                  </button>
-                  {saveState === "error" ? (
-                    <p className="form-message form-message--error">
-                      저장에 실패해 임시 메모를 이전 상태로 되돌렸습니다.
-                    </p>
-                  ) : null}
-                  {saveState === "saved" ? (
-                    <p className="form-message">fake backend 지연 후 메모가 저장되었습니다.</p>
-                  ) : null}
-                </form>
-                <div className="post-list">
-                  {selectedCompanyPosts.map((post) => (
-                    <article key={post.id}>
-                      <span>{post.dateTime}</span>
-                      <strong>{post.title}</strong>
-                      <p>{post.content}</p>
-                    </article>
-                  ))}
-                </div>
-              </article>
-            </section>
+                  </div>
+                </article>
+              </section>
+            ) : null}
           </>
         ) : null}
       </main>

@@ -468,6 +468,10 @@ dd {
   margin-bottom: 16px;
 }
 
+.dashboard-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .panel {
   min-width: 0;
   padding: 22px;
@@ -483,6 +487,21 @@ dd {
 
 .panel-heading strong {
   font-size: 15px;
+}
+
+.company-detail-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.company-detail-list div {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f8fbf9;
 }
 
 .bar-list {
@@ -900,6 +919,7 @@ tbody tr:last-child td {
 
   .dashboard-header,
   .dashboard-grid,
+  .company-detail-list,
   .kpi-grid {
     grid-template-columns: 1fr;
   }
