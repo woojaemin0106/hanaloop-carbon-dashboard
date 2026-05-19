@@ -20,9 +20,9 @@ type LoadState =
   | { status: "ready"; countries: Country[]; companies: Company[]; posts: Post[] };
 
 const navigationItems = [
-  { id: "overview", label: "Executive overview", icon: BarChart3 },
-  { id: "companies", label: "Companies", icon: Building2 },
-  { id: "posts", label: "Posts", icon: FileText },
+  { id: "overview", label: "경영진 개요", icon: BarChart3 },
+  { id: "companies", label: "회사별 현황", icon: Building2 },
+  { id: "posts", label: "운영 메모", icon: FileText },
 ];
 
 const formatNumber = (value: number, maximumFractionDigits = 1) =>
@@ -64,7 +64,7 @@ export function CompanyEmissionsDashboard() {
     } catch (error) {
       setLoadState({
         status: "error",
-        message: error instanceof Error ? error.message : "Dashboard data failed to load.",
+        message: error instanceof Error ? error.message : "대시보드 데이터를 불러오지 못했습니다.",
       });
     }
   }, []);
@@ -163,7 +163,7 @@ export function CompanyEmissionsDashboard() {
 
   return (
     <div className="app-shell">
-      <aside className="nav-drawer" aria-label="Dashboard navigation">
+      <aside className="nav-drawer" aria-label="대시보드 탐색">
         <div className="nav-brand">
           <span>HanaLoop</span>
           <strong>CarbonOps</strong>
@@ -191,17 +191,17 @@ export function CompanyEmissionsDashboard() {
       <main className="executive-main">
         <header className="executive-header">
           <div>
-            <p className="eyebrow">Carbon Emissions Dashboard</p>
-            <h1>Executive emissions control room</h1>
+            <p className="eyebrow">탄소 배출량 대시보드</p>
+            <h1>경영진 탄소 배출 관리 화면</h1>
             <p>
-              Compare company emissions, country-level exposure, and carbon tax estimates before
-              planning reduction actions.
+              회사별 배출량, 국가별 탄소세 노출, 월별 추이를 비교해 감축 계획과 비용 리스크를
+              함께 검토합니다.
             </p>
           </div>
           <div className="header-actions">
             <button className="secondary-button" onClick={loadDashboard} type="button">
               <RefreshCw aria-hidden="true" size={16} />
-              Refresh data
+              데이터 새로고침
             </button>
           </div>
         </header>
@@ -209,29 +209,29 @@ export function CompanyEmissionsDashboard() {
         {loadState.status === "loading" ? (
           <section className="state-panel" aria-live="polite">
             <RefreshCw aria-hidden="true" size={22} />
-            <strong>Loading emissions data</strong>
-            <p>Simulating backend latency for companies, countries, and posts.</p>
+            <strong>배출량 데이터를 불러오는 중</strong>
+            <p>회사, 국가, 운영 메모 데이터를 fake backend 지연과 함께 불러옵니다.</p>
           </section>
         ) : null}
 
         {loadState.status === "error" ? (
           <section className="state-panel state-panel--error" aria-live="assertive">
             <AlertCircle aria-hidden="true" size={22} />
-            <strong>Unable to load dashboard</strong>
+            <strong>대시보드를 불러오지 못했습니다</strong>
             <p>{loadState.message}</p>
             <button className="secondary-button" onClick={loadDashboard} type="button">
-              Try again
+              다시 시도
             </button>
           </section>
         ) : null}
 
         {readyData ? (
           <>
-            <section className="filter-bar" aria-label="Dashboard filters">
+            <section className="filter-bar" aria-label="대시보드 필터">
               <label>
-                Country
+                국가
                 <select value={selectedCountry} onChange={(event) => setSelectedCountry(event.target.value)}>
-                  <option value="all">All countries</option>
+                  <option value="all">전체 국가</option>
                   {readyData.countries.map((country) => (
                     <option key={country.code} value={country.code}>
                       {country.name}
@@ -240,7 +240,7 @@ export function CompanyEmissionsDashboard() {
                 </select>
               </label>
               <label>
-                Company
+                회사
                 <select
                   value={selectedCompany?.id ?? ""}
                   onChange={(event) => setSelectedCompanyId(event.target.value)}
@@ -254,42 +254,42 @@ export function CompanyEmissionsDashboard() {
               </label>
             </section>
 
-            <section className="kpi-grid" aria-label="Executive KPIs">
+            <section className="kpi-grid" aria-label="경영진 KPI">
               <article className="kpi-card">
-                <span>Total emissions</span>
+                <span>총 배출량</span>
                 <strong>
                   {formatNumber(totalEmissions)}
                   <small>tCO2e</small>
                 </strong>
-                <p>Across selected companies and months.</p>
+                <p>선택된 회사와 월별 데이터를 합산했습니다.</p>
               </article>
               <article className="kpi-card">
-                <span>Latest month</span>
+                <span>최신 월 배출량</span>
                 <strong>
                   {formatNumber(latestMonthEmissions)}
                   <small>tCO2e</small>
                 </strong>
-                <p>{latestMonth || "No month"} operating exposure.</p>
+                <p>{latestMonth || "월 데이터 없음"} 기준 운영 배출량입니다.</p>
               </article>
               <article className="kpi-card">
-                <span>Tax exposure</span>
+                <span>추정 탄소세</span>
                 <strong>
                   {formatUsd(estimatedTaxUsd)}
-                  <small>est.</small>
+                  <small>추정</small>
                 </strong>
-                <p>Country tax rate multiplied by total emissions.</p>
+                <p>국가별 탄소세율과 총 배출량을 곱해 추정했습니다.</p>
               </article>
               <article className="kpi-card">
-                <span>Companies</span>
+                <span>회사 수</span>
                 <strong>{visibleCompanies.length}</strong>
-                <p>Filtered operating entities.</p>
+                <p>현재 필터에 포함된 운영 법인입니다.</p>
               </article>
             </section>
 
             <section className="dashboard-grid" aria-label={activeSection}>
               <article className="panel">
                 <div className="panel-heading">
-                  <span>Monthly emissions</span>
+                  <span>월별 배출량</span>
                   <strong>{latestMonth}</strong>
                 </div>
                 <div className="company-month-chart">
@@ -310,8 +310,8 @@ export function CompanyEmissionsDashboard() {
 
               <article className="panel">
                 <div className="panel-heading">
-                  <span>Country exposure</span>
-                  <strong>{countrySummary.length} markets</strong>
+                  <span>국가별 노출</span>
+                  <strong>{countrySummary.length}개 시장</strong>
                 </div>
                 <div className="country-list">
                   {countrySummary.map((country) => (
@@ -328,11 +328,11 @@ export function CompanyEmissionsDashboard() {
               </article>
             </section>
 
-            <section className="dashboard-grid" aria-label="Company details and posts">
+            <section className="dashboard-grid" aria-label="회사 상세와 운영 메모">
               <article className="panel">
                 <div className="panel-heading">
-                  <span>Company ranking</span>
-                  <strong>{activeSection === "companies" ? "Focused" : "Portfolio"}</strong>
+                  <span>회사별 순위</span>
+                  <strong>{activeSection === "companies" ? "선택 보기" : "포트폴리오"}</strong>
                 </div>
                 <div className="company-list">
                   {companySummaries
@@ -360,34 +360,34 @@ export function CompanyEmissionsDashboard() {
 
               <article className="panel">
                 <div className="panel-heading">
-                  <span>Linked posts</span>
-                  <strong>{selectedCompany?.name ?? "No company"}</strong>
+                  <span>연결된 운영 메모</span>
+                  <strong>{selectedCompany?.name ?? "선택된 회사 없음"}</strong>
                 </div>
                 <form className="post-form" onSubmit={handleSavePost}>
                   <input
-                    aria-label="Post title"
+                    aria-label="운영 메모 제목"
                     onChange={(event) => setPostTitle(event.target.value)}
-                    placeholder="Post title"
+                    placeholder="운영 메모 제목"
                     value={postTitle}
                   />
                   <textarea
-                    aria-label="Post content"
+                    aria-label="운영 메모 내용"
                     onChange={(event) => setPostContent(event.target.value)}
-                    placeholder="Add operational note for this company"
+                    placeholder="이 회사의 리스크, 조치 사항, 후속 확인 내용을 입력하세요"
                     rows={3}
                     value={postContent}
                   />
                   <button disabled={saveState === "saving"} type="submit">
                     <Save aria-hidden="true" size={16} />
-                    {saveState === "saving" ? "Saving..." : "Save post"}
+                    {saveState === "saving" ? "저장 중..." : "메모 저장"}
                   </button>
                   {saveState === "error" ? (
                     <p className="form-message form-message--error">
-                      Save failed. The optimistic note was rolled back.
+                      저장에 실패해 임시 메모를 이전 상태로 되돌렸습니다.
                     </p>
                   ) : null}
                   {saveState === "saved" ? (
-                    <p className="form-message">Post saved with fake backend latency.</p>
+                    <p className="form-message">fake backend 지연 후 메모가 저장되었습니다.</p>
                   ) : null}
                 </form>
                 <div className="post-list">

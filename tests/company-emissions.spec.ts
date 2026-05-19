@@ -37,7 +37,7 @@ test("builds monthly and country summaries for the dashboard", () => {
   });
   expect(summarizeByCountry(companySummaries)[0]).toEqual({
     countryCode: "KR",
-    countryName: "South Korea",
+    countryName: "대한민국",
     emissions: 754,
     taxUsd: 13572,
   });

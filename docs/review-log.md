@@ -237,14 +237,15 @@
 
 - `http://127.0.0.1:3004`에서 실제 화면을 확인했다.
 - navigation drawer의 `CarbonOps` 브랜드와 메뉴가 렌더링되는지 확인했다.
-- 경영진 KPI 영역에서 `Tax exposure`와 `$63,575`가 표시되는지 확인했다.
-- Post 저장 전 `Math.random`을 실패 방향으로 고정해 fake backend write 실패를 만들고, `Save failed. The optimistic note was rolled back.` 메시지가 노출되는지 확인했다.
+- 경영진 KPI 영역에서 `추정 탄소세`와 `$63,575`가 표시되는지 확인했다.
+- Post 저장 전 `Math.random`을 실패 방향으로 고정해 fake backend write 실패를 만들고, `저장에 실패해 임시 메모를 이전 상태로 되돌렸습니다.` 메시지가 노출되는지 확인했다.
 
 ### 수기 검토
 
 - Google Docs 안내문은 회사/국가/월별 배출량/Post 모델을 요구하므로 첫 화면을 제품 PCF 중심에서 회사형 배출량 대시보드로 전환했다.
 - `src/lib/api.ts`는 안내문 stub과 동일한 방향으로 200-800ms 지연과 15% write 실패를 시뮬레이션한다.
 - Post 작성은 optimistic update 후 실패 시 이전 posts 배열로 rollback한다. loading/error/partial failure 흐름을 보여주기 위한 설계다.
+- 안내문은 UI 언어를 제한하지 않으므로 주요 화면 문구와 국가명, 운영 메모 seed는 한국어 친화적으로 정리했다.
 - 기존 PCF 모듈은 제거하지 않고 보조 시나리오로 유지했다. 이미 계산/검증된 도메인 로직이므로 확장 기능으로 설명할 수 있다.
 - React 18 조합을 맞추기 위해 Next 14/15를 시도했지만 현재 Windows/Node 환경에서 빌드 오류가 발생했다. 제출 안정성을 우선해 검증 가능한 Next 16/React 19 조합을 유지한다.
 
@@ -252,3 +253,31 @@
 
 - PR 머지 후 제출용 스크린샷과 짧은 영상에서 navigation drawer, KPI, Post 저장 실패 rollback을 보여준다.
 - 최종 제출 전 README의 기술 스택 trade-off 표현이 과도하게 방어적으로 보이지 않는지 다시 다듬는다.
+
+## 2026-05-19 - 제출용 스크린샷 정리
+
+### 자동 검증
+
+- `npm run build` 후 `npm run start -- --hostname 127.0.0.1 --port 3012` production server 기준으로 캡처했다.
+- Playwright Chromium으로 데스크톱, 모바일, rollback 상태를 각각 촬영했다.
+- 캡처 전 `총 배출량`, `$63,575`, rollback 오류 메시지가 렌더링되는지 기다린 뒤 저장했다.
+
+### 산출물
+
+- `submission/desktop-dashboard.png`
+- `submission/mobile-dashboard.png`
+- `submission/rollback-error-state.png`
+- `submission/README.md`
+
+### 수기 검토
+
+- 개발 서버 캡처에는 Next dev indicator가 포함되어 제출 자료로 부적합하다고 판단했다.
+- production server에서 다시 촬영해 화면 좌하단 개발 도구 표시가 없는 이미지를 남겼다.
+- 데스크톱 화면은 navigation drawer, KPI, 월별 차트, 국가별 노출, 회사 랭킹, 연결된 운영 메모가 한 번에 확인된다.
+- 모바일 화면은 nav drawer가 상단으로 쌓이고 KPI/차트/리스트가 단일 컬럼으로 읽히는지 확인했다.
+- rollback 화면은 fake backend write 실패 시 사용자가 입력한 값과 오류 메시지가 함께 보이는 상태로 남겼다.
+- 한국어 UI 변경 후 production server 기준으로 스크린샷을 다시 촬영했다.
+
+### 다음 검토 포인트
+
+- 최종 PR에서 README 표현과 제출 메일 문구를 한 번 더 줄인다.

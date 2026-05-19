@@ -50,6 +50,16 @@ npm run build
 | 국가 수 | `4` |
 | 운영 메모 | `3건` |
 
+## 제출 자료
+
+프로덕션 실행 화면 기준 스크린샷은 `submission/` 폴더에 정리했습니다.
+
+| 파일 | 내용 |
+| --- | --- |
+| `submission/desktop-dashboard.png` | 데스크톱 경영진 대시보드 전체 화면 |
+| `submission/mobile-dashboard.png` | 모바일 반응형 대시보드 화면 |
+| `submission/rollback-error-state.png` | fake backend 저장 실패와 optimistic rollback 상태 |
+
 ## 시스템 구조
 
 ```text
@@ -76,18 +86,19 @@ src/
 
 ```mermaid
 flowchart LR
-  A["Country / Company / Post seed data"] --> B["Fake backend with latency"]
-  B --> C["Client dashboard state"]
-  C --> D["Navigation drawer and filters"]
-  C --> E["Executive KPI and charts"]
-  C --> F["Post write with rollback"]
-  G["PCF calculation module"] --> H["Product scenario section"]
+  A["Country / Company / Post seed data"] --> B["지연이 있는 fake backend"]
+  B --> C["클라이언트 대시보드 상태"]
+  C --> D["탐색 메뉴와 필터"]
+  C --> E["한국어 경영진 KPI와 차트"]
+  C --> F["운영 메모 저장과 rollback"]
+  G["PCF 계산 모듈"] --> H["제품 시나리오 영역"]
 ```
 
 ## 설계 결정
 
 - 활동 데이터와 배출계수를 분리했습니다. 실제 탄소 관리 플랫폼에서는 배출계수 버전과 적용일을 추적해야 하므로, 단순 계산 배열보다 확장성이 좋습니다.
 - 프로젝트 안내문 원문이 회사/국가/게시글 모델을 요구하므로 첫 화면을 제품 PCF에서 회사형 배출량 대시보드로 전환했습니다.
+- 안내문은 UI 언어를 제한하지 않으므로 주요 화면 문구는 한국어 중심으로 구성했습니다. 국내 채용 과제 맥락에서 평가자가 KPI, 필터, 에러 상태를 빠르게 읽을 수 있게 하기 위한 결정입니다.
 - navigation drawer와 main content 영역을 분리했습니다. 경영진이 핵심 지표, 회사 목록, 운영 메모를 빠르게 오갈 수 있게 하기 위한 구조입니다.
 - fake backend는 200-800ms 지연과 15% 저장 실패를 시뮬레이션합니다. 저장 실패 시 optimistic update를 rollback해 loading/error state를 실제 사용자 흐름으로 보여줍니다.
 - 전기는 구매 전력으로 보아 `Scope 2`, 원소재와 운송은 공급망 활동으로 보아 `Scope 3`에 매핑했습니다.
