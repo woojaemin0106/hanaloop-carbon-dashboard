@@ -6,9 +6,9 @@
 
 | 항목 | 상태 |
 | --- | --- |
-| 전체 진행률 | 97% |
-| 현재 단계 | navigation drawer 섹션 전환 UX 개선 완료 |
-| 다음 작업 | 최종 README/검토 로그 마감 및 제출 메일 준비 |
+| 전체 진행률 | 100% |
+| 현재 단계 | 최종 제출 준비 완료 |
+| 다음 작업 | tech@hanaloop.com 제출 메일 발송 |
 | 마감 | 2026-05-20 16:00 |
 | 제출처 | tech@hanaloop.com |
 
@@ -24,9 +24,9 @@
 | 6 | 대시보드 UI 구현 | 완료 | 100% | KPI, 월별 추이, navigation drawer 섹션 전환, 회사/메모 화면 |
 | 7 | 데이터 입력 및 검증 UX 구현 | 완료 | 100% | 생산수량/활동량 입력, 오류 메시지, 재계산 |
 | 8 | 감축 시나리오 또는 배출계수 버전 UI 구현 | 완료 | 100% | 상위 배출 활동 조정 시나리오 |
-| 9 | 테스트와 빌드 검증 | 진행 중 | 95% | Playwright test 14개, `npm run build`, production screenshot 검증 |
-| 10 | README 최종화 | 진행 중 | 95% | 제출 자료 링크, 원문 요구사항 정렬, 실행 방법, 설계 설명, AI 사용 내역, trade-off |
-| 11 | 스크린샷/영상 제출 자료 정리 | 완료 | 100% | `submission/desktop-dashboard.png`, `submission/mobile-dashboard.png`, `submission/rollback-error-state.png` |
+| 9 | 테스트와 빌드 검증 | 완료 | 100% | Playwright test 14개, `npm run build`, production screenshot 검증 |
+| 10 | README 최종화 | 완료 | 100% | 제출 자료 링크, 원문 요구사항 정렬, 실행 방법, 설계 설명, AI 사용 내역, trade-off |
+| 11 | 스크린샷/영상 제출 자료 정리 | 완료 | 100% | `submission/desktop-dashboard.png`, `submission/company-section.png`, `submission/mobile-dashboard.png`, `submission/rollback-error-state.png` |
 
 ## 제출 체크리스트
 
@@ -40,7 +40,7 @@
 | 필수 | README에 AI 도구 사용 내역이 기록되어 있다 | 완료 |
 | 필수 | README에 시스템 설명과 설계 내용이 포함되어 있다 | 완료 |
 | 필수 | GitHub 저장소가 public이고 커밋 히스토리가 있다 | 완료 |
-| 권장 | ERD 또는 스키마 다이어그램이 README에 포함되어 있다 | 대기 |
+| 권장 | ERD 또는 스키마 다이어그램이 README에 포함되어 있다 | 완료 |
 | 권장 | 발표에서 설명할 설계 결정 이유 2개 이상을 정리한다 | 완료 |
 | 권장 | 설계 trade-off 1개 이상을 정리한다 | 완료 |
 | 보너스 | Docker Compose로 즉시 실행 가능하다 | 선택 |
@@ -65,9 +65,10 @@
 | 2026-05-19 | 프로젝트 안내 원문 기준 정렬 | 회사/국가/Post 모델, fake backend, navigation drawer, loading/error/rollback 흐름 추가 |
 | 2026-05-19 | 제출용 스크린샷 정리 | production 실행 기준 데스크톱, 모바일, rollback 상태 캡처 |
 | 2026-05-19 | navigation drawer UX 개선 | 회사별 현황/운영 메모 클릭 시 실제 본문 섹션이 전환되도록 수정 |
+| 2026-05-19 | 최종 제출 준비 마감 | main 배포 반영, 최신 스크린샷 재촬영, 제출 메일 초안 작성 |
 
 ## 바로 다음 액션
 
-1. 제출 자료 PR을 생성하고 `develop`에 머지한다.
-2. 최종 README와 검토 로그 표현을 마감한다.
-3. 제출 메일에 GitHub 링크, 스크린샷 위치, 실행 방법을 정리한다.
+1. `tech@hanaloop.com`으로 제출 메일을 발송한다.
+2. 메일 본문에는 GitHub 저장소 링크, 실행 방법, 제출 자료 위치를 포함한다.
+3. 필요 시 `docs/submission-email.md`의 문구를 기준으로 발송한다.

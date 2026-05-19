@@ -57,6 +57,7 @@ npm run build
 | 파일 | 내용 |
 | --- | --- |
 | `submission/desktop-dashboard.png` | 데스크톱 경영진 대시보드 전체 화면 |
+| `submission/company-section.png` | navigation drawer의 회사별 현황 화면 |
 | `submission/mobile-dashboard.png` | 모바일 반응형 대시보드 화면 |
 | `submission/rollback-error-state.png` | fake backend 저장 실패와 optimistic rollback 상태 |
 
@@ -125,3 +126,4 @@ AI는 요구사항 정리, 누락 항목 점검, 테스트 케이스 후보 정�
 
 전체 작업과 진행률은 [docs/progress.md](docs/progress.md)에서 관리합니다.
 작업 시간과 AI 활용 기록은 [docs/worktime-and-ai-log.md](docs/worktime-and-ai-log.md), 수기 검토 내역은 [docs/review-log.md](docs/review-log.md)에 정리했습니다.
+제출 메일 초안은 [docs/submission-email.md](docs/submission-email.md)에 정리했습니다.
